@@ -5,6 +5,8 @@ namespace POLES\TESTBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class DefaultController extends Controller
 {
@@ -59,7 +61,15 @@ class DefaultController extends Controller
     /**
      * @Route("/hi/{prenom}")
      */
-    public function hiAction($prenom){
-
+    public function hiAction($prenom, Request $request){
+        
+        $age = $request->query->get('age');
+        // Je demande à l'objet request de me récupérer la valeur du paramètre 'age' (?age=) de l'URL
+         
+        $params = array(
+            'prenom'    => $prenom,
+            'age'       => $age
+        );
+        return $this->render("@POLESTEST/Test/hi.html.twig", $params);
     }
 }
