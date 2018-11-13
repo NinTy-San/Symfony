@@ -1,0 +1,8 @@
+polestest:
+    resource: "@POLESTESTBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation

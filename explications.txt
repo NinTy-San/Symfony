@@ -1,0 +1,205 @@
+***************
+    SYMFONY
+***************
+
+INTRO    :  Qu'est-ce qu'est Symfony
+---------------------------------------------------
+
+ETAPE 1  :  Installation du framework Symfony 3.4
+ETAPE 2  :  Les Bundles
+ETAPE 3  :  Les routes et les controllers
+ETAPE 4  :  Création de notre boutiqueBundles
+ETAPE 5  :  TWIG
+ETAPE 6  :  Assets
+ETAPE 7  :  Nos Entités
+ETAPE 8  :  Doctrine
+ETAPE 9  :  Les formulaires
+ETAPE 10 :  Validation des données
+ETAPE 11 :  Sécurité et utilisateurs 
+ETAPE 12 :  Les services
+ETAPE 13 :  Les évènements 
+ETAPE 14 :  Symfony 4 (Bundle-less et Flex)
+
+----------------------------------------
+INTRO    :  Qu'est-ce qu'est Symfony
+----------------------------------------
+
+1- Avantage à utiliser un framework du marché ?
+    A./ Offr une organisation optimisée
+    B./ Fonctionnalités communes d'un projet à un autres
+    C./ Les services disponibles (routing, securité, twig, doctrine...)
+    D./ La communauté 
+
+2- Choix du framework ?
+    A./ Construire son propre framework ? 
+    B./ Les framework fullstack (Symfony, Laravel, zend, cake...) ?
+    C./ Les mini-framework (Silex, Slim, fat-free, Lumen) ?
+
+3- Symfony : 
+    A./ Framework français crée par les équipe de Sensiolabs
+    B./ Versions : 
+        - 2.8
+        - 3.4 : 2.8 (retrait de quelques fonctionnalités dépriéciées)
+
+        - 4 / 4.1 / 4.2 :
+            -> PHP 7.1
+            -> Bundle-less
+            -> Flex (service : qui confugure les outils de manière automatique et standardisée)
+
+
+---------------------------------------------------
+ETAPE 1  :  Installation du framework Symfony 3.4
+---------------------------------------------------
+sommaire : 
+1/ Instalation de composer
+2/ Installer une application SF vierge
+3/ Arborescence des dossiers et fichiers
+4/ Lancement de l'application
+5/ Fonctionnement des utiliser
+--------------------------------------
+
+1/ Instalation de composer
+    - Composer est un outil de gestion de dépendence. Il permet d'installer les service (composant ou dépendences), et de les mettre à jour (équivalant de NPM).
+    - Il est relié à un fichier composer.json
+
+2/ Instalation d'une application SF
+    A./ Se diriger sur le sossier où l'on installe SF
+        <cmd>
+        cd C:\xampp\htdocs\Symfony
+
+        Ou 
+        Dans le dossier cible faire clic-droit + maj > ouvrir une fenêtre power shell
+        
+    B./ Pour unstaller un SF : $
+        Avec Symfony installer : 
+        <cmd>
+        Symfony new project nom_du_projet
+
+        Avec Composer :
+        <cmd>
+        composer create-project symfony/framework-standard-edition-project_test
+
+3/ Arborescence des dossiers/ficiers : 
+    - app/            : La configuration de notre application + layout.
+    - bin/            : Les executable de notre application.
+    - src/            : Contient tous le code de notre application. C'est ici que l'on mettra notre code.
+    - tests/          : Concerne tous les tests de notre application.
+    - var/            : Concerne les fichiers écrit par SF au cours du processus d'execution (cache, les logs...)
+    - vendor/         : Contient tous le code source (coeur) d'un projet SF
+    - web/            : Contient tous les fichiers accessibles aux clients (img/photo/, js/, font/, .css) et le fichier controller frontal 
+                        (app.php ou app_dev.php)
+    - composer.json   : Contient les dépendences. Ce fichier permet de mettre à l'application et au dépendences. Pour le moment constatons simplement                         qu'il est bien rempli...
+
+4/ Lancement de notre application
+    Méthode 1 :
+        - navigateur : localhost/Synfony/project_test/web/app.php
+        - navigateur : localhost/Synfony/project_test/web/app_dev.php
+
+    Méthode 2 : Serveur interne SF
+        <cmd>
+        cd project_test
+        php bin/console server:run
+
+    navigateur : localhost:8000
+    Nous permet de ne pas avoir à confugurer des virtual hosts pour nos projets.
+
+    Les fichiers exécutés sont :
+        web/app.php (mode prod)
+        web/app_dev.php (mode dev)
+
+    test :
+        localhost/Synfony/project_test/web/app.php/page_inconnue
+        localhost/Synfony/project_test/web/app_dev.php/page_inconnue
+
+    En prod les erreurs sont invisible (404) alors qu'en dev on a une page avec les erreurs. En dev on a une barre de développeur.
+
+5/ Fonctionnement des utiliser
+
+    Nos controlleurs frontaux (app.php ou app_dev.php) reçoivent une requête HTTP (URL) et demande au kernel  de charger un controller et une fonction. 
+    Pour que le kernel s'y retrouve on va créer des routes.
+
+    Voir le fichier src/AppBundle/Controller/DefaultController.php
+
+---------------------------------------------------
+            ETAPE 2  :  Les Bundles
+---------------------------------------------------
+
+sommaire :
+1/ Le concept des Bundles
+2/ Création de notre Bundle
+-------------------------------
+
+1/ Le concept des Bundles
+
+    -Brique de l'application
+        
+        - ProduitBundle :
+            controller/
+                boutiqueAction()    : Affiichage home
+                categorieAction()   : Affichage des produits d'une cat"gorrie
+                ProduitAction()     : Affichage d'un produit
+        
+        - MembreBundle : 
+            Controller/
+                inscriptionAction()
+                connexionAction()
+                ...
+        
+        - BaseBundle
+            homeAction()
+            contactAction()
+            cgvAction()
+
+        - /!\ Avec le temps on estime plus propre de faire AppBundle avec tous les controllers
+
+        Un Bundle se compose de :
+                                    - controller/           : Les controllers du Bundle     
+                                                            - MembreController, ProduitController, BaseController...
+
+                                    - DependencyInjection/  : Info du Bundle
+
+                                    - Entity/               : Contient les classes Modèles (POPO : Plain Old PHP Object)
+
+                                    - Form/                 : Contient les formulaires de nortre app
+
+                                    -Ressource/             : Contient
+                                                                Public/     : js, css
+                                                                Config/     : Fichiers de config du Bundle (routing...)
+                                                                Views/      : Toutes les vues de l'app (.html.twig)
+
+                                    -Repository/            : Contient les repositiry du Bundle
+
+
+2/ Création de notre Budle-less
+<cmd> 
+php bin/console generate:bundle
+
+    -On choisi un nom au Bundle (avec ou sans Namespace) :
+    POLES\TestBundle (POLES:namespace)
+
+    - On choisi la destination [src/]
+    - On choisi le format des config [xml] : annotation
+
+    /!\ Enregistrer le Bundle dans composer.json (PSR-4)
+    /!\ On met l'application à jour
+
+        <cmd>
+        COMPOSER UPDATE
+
+    /!\ Attention : Dans cette version, par defaut la fonction render appèle les vues de la mauvaise manière
+            -> POLESTESTBundle:Default:index.html.twig
+            -> @POLESTEST/Default/index.html.twig
+
+    =========> A ce stade notre home doit afficher 'hello world !
+    =========> Notre app et notre nouveau Bundle sont oérationnels.
+
+
+
+---------------------------------------------------
+ETAPE 3  :  Les routes et les controllers
+---------------------------------------------------
+Sommaire :
+1/ création de route
+2/ l'objet request
+3/ l'objet response
+4/ redirection
