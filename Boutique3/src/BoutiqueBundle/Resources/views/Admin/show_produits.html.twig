@@ -1,0 +1,87 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block title %}
+   {{title}}
+{% endblock %}
+{% block content %}
+    <h1 class="mt-5"> {{ title }} </h1>
+    <div class="row">
+        <div class="col-4">
+            {% for message in app.session.flashBag.get('success') %}
+                <span class="alert alert-success"> {{ message }} </span><br>
+            {% endfor %}
+            {% for message in app.session.flashBag.get('error') %}
+                <span class="alert alert-danger"> {{ message }} </span><br>
+            {% endfor %}
+        <div>
+    <div>
+
+
+    <div class="row mt-5">
+        
+        <div class="col-12">
+			<p class="alert alert-info">Nombre de produits dans la boutique :  {{ produits | length }} </p><br>
+        <div>
+        
+    </div>
+
+    <div class="row ">
+        <div class="col-12">
+            <table class="table table-hover table-dark w-100 text-center">     
+                <tr class=" text-white">
+                    <th>photo</th>
+                    <th>Id produit</th>
+                    <th>Reference</th>
+                    <th>Categorie</th>
+                    <th>Titre</th>
+                    <th>Description</th>
+                    <th>Taille</th>
+                    <th>Couleur</th>
+                    <th>Public</th>
+                    <th>Prix</th>
+                    <th>Stock</th>
+                    <th colspan="3">Action</th>
+
+                    {# {% for champ in champs %}
+                        <th> {{ champs }} </th>
+                    {% endfor %} #}
+
+                </tr>
+
+                {% for pdt in produits %}
+                <tr>
+                        {# {% for produit in produits %}
+                            {% for key, valeur in produit %}
+                                <td> {{produit.valeur}} </td>
+                            {% endfor %}
+                        {% endfor %} #}
+                        <td><img height="75px" src="{{ asset('/photo/' ~ pdt.photo) }}"> </td>
+                        <td> {{pdt.idProduit}} </td>
+                        <td> {{pdt.reference}} </td>
+                        <td> {{pdt.categorie}} </td>
+                        <td> {{pdt.titre}} </td>
+                        <td> {{pdt.description}} </td>
+                        <td> {{pdt.taille}} </td>
+                        <td> {{pdt.couleur}} </td>
+                        {% if pdt.public == 'm' %}
+                        <td> Homme </td>
+                        {% elseif pdt.public == 'f' %}
+                        <td> Femme </td>
+                        {% else %}
+                        <td> Mixte </td>
+                        {% endif %}
+
+                        <td> {{pdt.prix | number_format(2, ',', ' ') }} </td>
+                        <td> {{pdt.stock}} </td>
+
+                        <td><a target="_blank" href="{{ path('produit', {'id' : pdt.idProduit})}}"><i class="text-info fas fa-eye"></i></a></td>
+                       <td><a href=""><i class="text-warning fas fa-edit"></i></a></td>
+                        <td><a href="{{ path('delete_produit', {'id' : pdt.idProduit})}}"><i class="text-danger fas fa-trash-alt"></i></a></td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        <div>
+    </div>
+{% endblock %}	

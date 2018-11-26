@@ -1,0 +1,77 @@
+{% extends 'layout.html.twig' %}
+
+
+{% block content %}
+<div class="row">
+
+        <div class="col-12">
+            <h1>{{ title }}</h1>
+        </div>
+
+        <div class="col-md-8">
+            <img class="img-fluid" src="{{ asset('/photo/' ~ produit.photo) }}" alt="{{ produit.titre }}">
+        </div>
+
+        <div class="col-md-4">
+            <h3>Description</h3>
+            <p>{{ produit.description }}</p>
+
+            <h3>Détails</h3>
+            <ul>
+                <li>Catégorie : {{ produit.categorie }}</li>
+                <li>Couleur : {{ produit.couleur }}</li>
+                <li>Taille : {{ produit.taille }}</li>
+            </ul>
+            <h4>Prix : {{ produit.prix | number_format(2, ',', ' ') }} €</h4>
+
+            
+			{% if produit.stock > 0 %}
+				<form method="post" action="panier.php">
+
+					<input type="hidden" name="id_produit" value="">
+					<select name="quantite" class="custom-select col-sm-2">
+                  
+						{% for i in 1..5  if i <= produit.stock %}
+							<option>{{ i }}</option>    
+						{% endfor %}
+                
+					</select>
+
+					<input type="submit" name="ajout_panier" value="ajouter au panier" class="btn btn-info  col-sm-8 ml-2 ">      
+
+				</form>
+					<p>Nombre de produit(s) disponible(s) : {{ produit.stock }}</p>
+			
+			{% else %}
+		
+					<p>Produit en rupture de stock !</p>
+			{% endif %}
+			
+
+            <p>
+                <a href="{{ path('categorie', { 'cat':  produit.categorie } ) }}">Retour vers la catégorie {{ produit.categorie }}</a>
+            </p>
+
+        </div>
+
+    </div><!-- .row -->
+
+    {% if suggestions is defined %}
+    {#  if suggestions ==> isset  #}
+    {# if suggestions is not null  #}
+    {# if suggestions is != null  #}
+    {# exercice : suggestions produitq #}
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <h3>Suggestions de produits</h3>
+        </div>
+        {% for sug in suggestions %}
+            <div class="col-sm-3">
+                <a href="{{ path('produit', { 'id':  sug.idProduit } ) }}"><img src="{{ asset('/photo/' ~ sug.photo) }}" alt="{{sug.titre}}" class="img-fluid"></a>
+                <h4> {{sug.titre}} - {{sug.prix}}€ </h4>
+            </div>
+        {% endfor %}
+    </div><!-- .row -->
+    {% endif %}
+    {% endblock %}	

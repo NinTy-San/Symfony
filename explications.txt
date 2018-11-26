@@ -1,205 +1,749 @@
-***************
-    SYMFONY
-***************
 
-INTRO    :  Qu'est-ce qu'est Symfony
----------------------------------------------------
+-------
+SYMFONY
+-------
 
-ETAPE 1  :  Installation du framework Symfony 3.4
-ETAPE 2  :  Les Bundles
-ETAPE 3  :  Les routes et les controllers
-ETAPE 4  :  Création de notre boutiqueBundles
-ETAPE 5  :  TWIG
-ETAPE 6  :  Assets
-ETAPE 7  :  Nos Entités
-ETAPE 8  :  Doctrine
-ETAPE 9  :  Les formulaires
-ETAPE 10 :  Validation des données
-ETAPE 11 :  Sécurité et utilisateurs 
-ETAPE 12 :  Les services
-ETAPE 13 :  Les évènements 
-ETAPE 14 :  Symfony 4 (Bundle-less et Flex)
+INTRO : Qu'est-ce que Symfony ? 
+ETAPE 1 : Installation du framework Symfony 3.4
+ETAPE 2 : Les Bundles
+ETAPE 3 : Les routes et les controllers 
+ETAPE 4 : Créer notre Boutique
+ETAPE 5 : TWIG
+ETAPE 6 : Assets
+ETAPE 7 : Nos Entités
+ETAPE 8 : Doctrine
+ETAPE 9 : Les formulaires
+ETAPE 10 : Validations des données
+ETAPE 11 : Sécurité et Utilisateurs
+ETAPE 12 : Les services
+ETAPE 13 : Les évènements
+ETAPE 14 : Symfony 4 (BundleLess et Flex)
 
-----------------------------------------
-INTRO    :  Qu'est-ce qu'est Symfony
-----------------------------------------
+-------------------------------
+INTRO : Qu'est-ce que Symfony ? 
+-------------------------------
 
-1- Avantage à utiliser un framework du marché ?
-    A./ Offr une organisation optimisée
-    B./ Fonctionnalités communes d'un projet à un autres
-    C./ Les services disponibles (routing, securité, twig, doctrine...)
-    D./ La communauté 
-
-2- Choix du framework ?
-    A./ Construire son propre framework ? 
-    B./ Les framework fullstack (Symfony, Laravel, zend, cake...) ?
-    C./ Les mini-framework (Silex, Slim, fat-free, Lumen) ?
-
-3- Symfony : 
-    A./ Framework français crée par les équipe de Sensiolabs
-    B./ Versions : 
-        - 2.8
-        - 3.4 : 2.8 (retrait de quelques fonctionnalités dépriéciées)
-
-        - 4 / 4.1 / 4.2 :
-            -> PHP 7.1
-            -> Bundle-less
-            -> Flex (service : qui confugure les outils de manière automatique et standardisée)
+1/ avantages à utiliser un framework du marché ? 
+	1/ Offre une organisation optimisée
+	2/ Fonctionnalités communes d'un projet à un autre
+	3/ Les services disponibles (routing, la sécurité, twig, doctrine...)
+	4/ La communauté
+	
+2/ Choix du framework ? 
+	A/ Construire son propre framework ? 
+	B/ Les framework fullstack (Symfony, Laravel, zend, cake...) ? 
+	C/ Les mini-framework (Silex, Slim, fat-free, Lumen) ? 
 
 
----------------------------------------------------
-ETAPE 1  :  Installation du framework Symfony 3.4
----------------------------------------------------
-sommaire : 
-1/ Instalation de composer
+3/ Symfony : 
+	A/ Framework français créé par les équipes de SensioLab
+	B/ Versions : 
+		LTS : 
+		- 2.8
+		- 3.4 : 2.8 (retraits de quelques fonctionnalités dépréciées)
+		
+		- 4/4.1/4.2 : 
+			-> PHP 7.1
+			-> Bundle-less
+			-> Flex (service qui configure les outils de manière automatique et standardisée)
+
+-----------------------------------------------
+ETAPE 1 : Installation du framework Symfony 3.4
+-----------------------------------------------
+Sommaire : 
+1/ installer de composer
 2/ Installer une application SF vierge
 3/ Arborescence des dossiers et fichiers
 4/ Lancement de l'application
-5/ Fonctionnement des utiliser
---------------------------------------
+5/ Fonctionnement des URL
+--------------------------
 
-1/ Instalation de composer
-    - Composer est un outil de gestion de dépendence. Il permet d'installer les service (composant ou dépendences), et de les mettre à jour (équivalant de NPM).
-    - Il est relié à un fichier composer.json
+1/ installer de composer
+	- Composer est outil de gestion de dépendances. Il permet d'installer les services (composants ou dépendances), et de les mettre à jour (équivalent de NPM). 
+	- Il est relié à un fichier composer.json
+	
+2/ Installation d'une application SF
 
-2/ Instalation d'une application SF
-    A./ Se diriger sur le sossier où l'on installe SF
-        <cmd>
-        cd C:\xampp\htdocs\Symfony
+	A/ Se diriger sur le dossier où l'on installe SF
+	<cmd>
+	cd c://Xampp/htdocs/Symfony
+	
+	Ou
+	Dans le dossier cible faire clic-droit + maj > Ouvrir une fenêtre power shell
+	
+	B/ Pour installer un SF : 
+	Avec Symfony installer :
+	<cmd>
+	symfony new project nom_du_projet
+	
+	Avec Composer : 
+	<cmd>
+	
+	composer create-project symfony/framework-standard-edition projet_test
 
-        Ou 
-        Dans le dossier cible faire clic-droit + maj > ouvrir une fenêtre power shell
-        
-    B./ Pour unstaller un SF : $
-        Avec Symfony installer : 
-        <cmd>
-        Symfony new project nom_du_projet
+3/ Arborescence des dossier/fichiers : 
+	- app/ : La configuation de notre application + layout
+	- bin/ : Les exécutables de notre app 
+	- src/ : Contient tout le code de notre application. C'est ici que l'on mettra notre code. 
+	tests/ : Concerne tous les tests de notre application
+	- var/ : Concernen les fichiers écris par SF au cours du processus d'éxécution (cache, les logs...)
+	- vendor/ : Contient tout le code source (coeur) d'un projet SF
+	- web/ : Contenir tous les fichiers accessibles aux clients (img/ photo/, JS/ , fonts/, CSS) et le fichier controller frontal (app.php ou app_dev.php) 
+	- composer.json : Contient les dépendances. Ce fichier permet de mettre à l'application et les dépendances. Pour le moment constatons simplement qu'il est bien rempli...
+	
+4/ Lancement de notre application :
+	
+	Méthode 1 : 
+	navigateur : localhost/Symfony/projet_test/web/app.php
+	navigateur : localhost/Symfony/projet_test/web/app_dev.php
+	
+	Méthode 2 : Serveur interne à SF
+	<cmd>
+	cd projet_test
+	php bin/console server:run
+	
+	navigateur : localhost:8000
+	Nous permet de ne pas avoir à configurer des virtual hosts pour nos projets. 
+	
+	Les fichiers exécutés sont : 
+	web/app.php (mode prod)
+	web/app_dev.php (mode dev)
+	
+	test : 
+	localhost/Symfony/projet_test/web/app.php/page_inconnue
+	localhost/Symfony/projet_test/web/app_dev.php/page_inconnue
+	
+	En prod les erreurs sont invisibles (404) alors qu'en dev on a une page avec les erreurs. En dev on a une barre de développeur. 
+	
+5/ Fonctionnement des URL
+	
+	Nos controleurs frontaux (app.php ou app_dev.php) recoivent une requête HTTP (URL) et demande au Kernel de charger un controller et une fonction. 
+	Pour que le Kernel s'y retrouve on va créer des routes. 
+	
+	Voir le fichier src/AppBundle/Controller/DefaultController.php
+	
+---------------------	
+ETAPE 2 : Les Bundles
+---------------------
+Sommaire : 
+1/ Le concept de bundle
+2/ Création de notre Bundle-less
+----------------------
 
-        Avec Composer :
-        <cmd>
-        composer create-project symfony/framework-standard-edition-project_test
+1/ Le concept de bundle
 
-3/ Arborescence des dossiers/ficiers : 
-    - app/            : La configuration de notre application + layout.
-    - bin/            : Les executable de notre application.
-    - src/            : Contient tous le code de notre application. C'est ici que l'on mettra notre code.
-    - tests/          : Concerne tous les tests de notre application.
-    - var/            : Concerne les fichiers écrit par SF au cours du processus d'execution (cache, les logs...)
-    - vendor/         : Contient tous le code source (coeur) d'un projet SF
-    - web/            : Contient tous les fichiers accessibles aux clients (img/photo/, js/, font/, .css) et le fichier controller frontal 
-                        (app.php ou app_dev.php)
-    - composer.json   : Contient les dépendences. Ce fichier permet de mettre à l'application et au dépendences. Pour le moment constatons simplement                         qu'il est bien rempli...
+ - Brique de l'application	
+	
+	- ProduitBundle :
+			controller/
+				boutiqueAction() : Affichage home
+				categorieAction() : Affichage des pdts d'une cat
+				produitAction() : Affichage d'un pdt
 
-4/ Lancement de notre application
-    Méthode 1 :
-        - navigateur : localhost/Synfony/project_test/web/app.php
-        - navigateur : localhost/Synfony/project_test/web/app_dev.php
+	- MembreBundle : 
+			Controller/
+				inscriptionAction()
+				connexionAction()
+				...
+	- BaseBundle : 
+			homeAction()
+			contactAction()
+			cgvAction()
+			
+	- /!\ Avec le temps on estime plus propre de faire
+	AppBundle avec tous les controllers. 
+	
+	
+	Un bundle se compose de : 
+		- controller/  : Les controllers du Bundle
+			- MembreController, ProduitController, BaseController...
+		
+		- DependencyInjection/ : Infos du Bundle
+		- Entity/ : Contient les classes Modèles (POPO : Plain Old PHP Object)
+		
+		- Form/ : Contenir les formulaires de notre app
+		
+		- Ressources/ : Contient 
+			Public/ : JS, CSS, 
+			Config/ : Fichiers de config du Bundle (routing...)
+			Views/ : Toutes les vues de l'app (.html.twig)
+		
+		- Repository/ : Contient les repository du Bundle
+		
+		
+2/ Création de notre Bundle-less
 
-    Méthode 2 : Serveur interne SF
-        <cmd>
-        cd project_test
-        php bin/console server:run
+	<cmd>
+	php bin console generate:bundle
 
-    navigateur : localhost:8000
-    Nous permet de ne pas avoir à confugurer des virtual hosts pour nos projets.
+	 - On choisi un nom au Bundle (avec ou sans Namespace) : POLES\TestBundle (POLES:namespace)
 
-    Les fichiers exécutés sont :
-        web/app.php (mode prod)
-        web/app_dev.php (mode dev)
+	 - On choisi la destination [src/]
+	 - On choisi le format des config [xml] : annotation
+	 
+	 /!\ Enregistrer le Bundle dans composer.json (PSR-4)
+	 /!\ On met l'application à jour
+		<cmd>
+		composer update
+	
+	/!\ Attention : Dans cette version, par défaut la fonction render appelle les vues de la mauvaise manière
+		-> POLESTestBundle:default:index.html.twig
+		-> @POLESTest/default/index.html.twig
+		
+	====> A ce stade notre home doit afficher 'hello world'
+	====> Notre app et notre nouveau Bundle sont opérationnels. 
+	
+---------------------------------------	
+ETAPE 3 : Les routes et les controllers 
+---------------------------------------	
+Sommaire : 
+1/ création de route
+2/ L'objet Request
+3/ L'objet Response
+4/ redirection
+----------------------------------------
 
-    test :
-        localhost/Synfony/project_test/web/app.php/page_inconnue
-        localhost/Synfony/project_test/web/app_dev.php/page_inconnue
+1/ création de route
 
-    En prod les erreurs sont invisible (404) alors qu'en dev on a une page avec les erreurs. En dev on a une barre de développeur.
+	-> route('/') : route simple rend une vue 'hello world'
+	-> route('/bonjour') : route sans param, et sans vue (juste un echo)
+	-> route('/bonjour2') : route sans param et avec response
+	-> route('/hello/{prenom}') : route avec un param et avec Response
+	-> route('/hola/{prenom}') : route avec param et rendu d'une vue html.twig
+	-> route('/hi/{prenom}') : route avec param d'URL + param GET (age) et rendu d'une vue html.twig
+	-> route('/redirect') : route avec redirection
+	-> route('/message') : route avec utilisation de la session
 
-5/ Fonctionnement des utiliser
+ - Les routes sont déclarées soit en annotation, soit en XML, soit en PHP, soit en YML (ici c'est en annotation). 
+ - Chaque route est liée à une fonction (action) qui contient Action dans son nom. 
+ - Lors de la création d'une route on peut définir un paramètre dynamic/variable avec les {}. Celui-ci sera récupéré en argument de la fonction. 
+ 
+ 
+ ==> Une requête HTTP est toujours constituée d'une REQUETE et d'une REPONSE
+ 
+2/ L'objet Request
 
-    Nos controlleurs frontaux (app.php ou app_dev.php) reçoivent une requête HTTP (URL) et demande au kernel  de charger un controller et une fonction. 
-    Pour que le kernel s'y retrouve on va créer des routes.
+- L'objet request stock les infos de la requete HTTP
 
-    Voir le fichier src/AppBundle/Controller/DefaultController.php
+	<code>
+	use Symfony\Component\HttpFoundation\Request; 
 
----------------------------------------------------
-            ETAPE 2  :  Les Bundles
----------------------------------------------------
+	$request -> query -> get('param_en_get');
+	$request -> request -> get('param_en_post');
+	$request -> cookies -> get('param_en_cookie');
+	$request -> server -> get('param_du_server');
+	$request -> attributes -> get('param_en_url');
 
-sommaire :
-1/ Le concept des Bundles
-2/ Création de notre Bundle
+	www.boutique.com/bonjour/{prenom}?age=37
+	$age = $request -> query -> get('age');
+	$prenom = $request -> attributes -> get('prenom');
+
+	Si request cherche un paramètre qui n'existe pas, il retourne une réponse vide et non une erreur.
+	
+	Pour récupérer/enregistrer des infos en session : 
+	
+	Méthode 1 : 
+	$session = $request -> getSession();
+	$session -> get('id_membre');
+	$session -> set('id_membre', 12);
+	
+	Méthode 2 : 
+	$request -> session -> get('id_membre');
+	$request -> session -> set('id_membre', 12); 
+	
+3/ L'objet Response
+
+ - L'objet Response va permettre à nos routes de retourner une réponse. Chaque route doit au final retourner une reponse. 
+ 
+	<code>
+	use Symfony\Component\HttpFoundation\Response; 
+	
+	La fonction render() (qui affiche une vue) c'est déjà une réponse. 
+	
+	$this -> render('vue.html.twig'); 
+	$this -> getTemplating() -> renderResponse('vue.html.twig');
+	
+	
+4/ redirection
+
+	<code>
+	use Symfony\Component\HttpFoundation\RedirectResponse;
+
+	(Voir la route "/redirect")
+	A ce stade, les routes doivent avoir un nom. Ce nom va servir pour les redirections, mais également pour les liens href
+
+
+5/ message
+
+	La variable "app" utilisée dans les template Twig (message.html.twig), est une variable globale qui contient des infos générales sur l'application (app.session, app.user)
+
+------------------------------
+ETAPE 4 : Créer notre Boutique
+------------------------------
+Sommaire : 
+1/ Créer un nouveau projet Symfony (Boutique3)
+2/ Créer et enregistrer notre BoutiqueBundle
+3/ Update de l'app
+4/ Réorganiser le bundle (controller et vues)
+5/ Créer les première routes
 -------------------------------
 
-1/ Le concept des Bundles
+1/ Créer un nouveau projet Symfony (Boutique3)
 
-    -Brique de l'application
-        
-        - ProduitBundle :
-            controller/
-                boutiqueAction()    : Affiichage home
-                categorieAction()   : Affichage des produits d'une cat"gorrie
-                ProduitAction()     : Affichage d'un produit
-        
-        - MembreBundle : 
-            Controller/
-                inscriptionAction()
-                connexionAction()
-                ...
-        
-        - BaseBundle
-            homeAction()
-            contactAction()
-            cgvAction()
-
-        - /!\ Avec le temps on estime plus propre de faire AppBundle avec tous les controllers
-
-        Un Bundle se compose de :
-                                    - controller/           : Les controllers du Bundle     
-                                                            - MembreController, ProduitController, BaseController...
-
-                                    - DependencyInjection/  : Info du Bundle
-
-                                    - Entity/               : Contient les classes Modèles (POPO : Plain Old PHP Object)
-
-                                    - Form/                 : Contient les formulaires de nortre app
-
-                                    -Ressource/             : Contient
-                                                                Public/     : js, css
-                                                                Config/     : Fichiers de config du Bundle (routing...)
-                                                                Views/      : Toutes les vues de l'app (.html.twig)
-
-                                    -Repository/            : Contient les repositiry du Bundle
+	- Se placer dans le dossier Symfony
+	- Lancer la console
+	<cmd>
+	composer create-project symfony/framework-standard-edition Boutique3
 
 
-2/ Création de notre Budle-less
-<cmd> 
-php bin/console generate:bundle
+2/ Créer et enregistrer notre BoutiqueBundle
+	- Se placer dans le projet Boutique3
+	<cmd>
+	cd Boutique3
+	
+	- Créer le bundle BoutiqueBundle
+	<cmd>
+	php bin/console generate:bundle
+	[no]
+	BoutiqueBundle
+	[src/]
+	[annotation]
+	
+	- Enregistrer le Bundle 
+	<code> composer.json
+	"psr-4": {
+            "AppBundle\\": "src/AppBundle",
+			"BoutiqueBundle\\": "src/BoutiqueBundle"
+        },
+	
+	<cmd>
+	composer update
+	
+	- Lancement du serveur
+	<cmd>
+	php bin/console server:run
+	
+	- Modification de render dans la méthode indexAction de src/BoutiqueBundle/Controller/DefaultController
+	<code>
+	render('BoutiqueBundle:Default:index.html.twig');
+	render('@Boutique/Default/index.html.twig');
+	
 
-    -On choisi un nom au Bundle (avec ou sans Namespace) :
-    POLES\TestBundle (POLES:namespace)
+	TEST : localhost:8000
+	
+	
 
-    - On choisi la destination [src/]
-    - On choisi le format des config [xml] : annotation
-
-    /!\ Enregistrer le Bundle dans composer.json (PSR-4)
-    /!\ On met l'application à jour
-
-        <cmd>
-        COMPOSER UPDATE
-
-    /!\ Attention : Dans cette version, par defaut la fonction render appèle les vues de la mauvaise manière
-            -> POLESTESTBundle:Default:index.html.twig
-            -> @POLESTEST/Default/index.html.twig
-
-    =========> A ce stade notre home doit afficher 'hello world !
-    =========> Notre app et notre nouveau Bundle sont oérationnels.
+3/ Update de l'app
+	- Après avoir enregistré notre BoutiqueBundle, on modifier le fichier composer.json et on met à jour l'application. 
+		-> routing.yml le bundle est ajouté
+		-> appKernel.php le bundle est enregistré
 
 
+4/ Réorganiser le bundle (controller et vues)
+	-> Renommer le fichier DefaultController.php en ProduitController.php
+	-> Créer CommandeController.php et MembreController.php
+	-> Dans les vues on a ajouté :
+		Produit/, Commande/, Membre/ 
 
----------------------------------------------------
-ETAPE 3  :  Les routes et les controllers
----------------------------------------------------
-Sommaire :
-1/ création de route
-2/ l'objet request
-3/ l'objet response
-4/ redirection
+
+5/ Créer les premières routes
+	ProduitController : 
+		-> "/" -> indexAction() -> index.html.twig
+		-> "/produit/{id}" -> produitAction() -> produit.html.twig
+		-> "/categorie/{cat}" -> categorieAction() -> index.html.twig
+		
+		
+	===> A ce stade, les vues n'ont pas de design, nous allons mettre cela en place dans le prochain chapite Twig
+	===> A ce stade nous ne pouvons pas encore communiquer avec la BDD, il faut voir DOCTRINE (sujet vaste) pour cela. On créer donc dans nos controller des données fictives. 
+	
+--------------
+ETAPE 5 : TWIG
+--------------
+Sommaire : 
+1/ Qu'est-ce que Twig ?
+2/ Créer un layout
+3/ L'héritage Twig
+4/ Modification de nos vues
+5/ Documentation Twig
+---------------
+
+1/ Qu'est-ce que Twig ?
+	- Twig est un moteur de template, dont l'objectif est de simplifier la présence de PHP dans l'HTML. Mais aussi de faciliter certaines actions (boucle, mette un texte en MAJ, formater les dates...)
+	Autres moteurs : TPL, Smarty, liquid etc...
+	
+	- Twig est issu de Symfony, mais on peut l'installer sur tout projet. 
+	
+	
+2/ Créer un layout
+	
+	- Un layout c'est la structure d'une page du site. un site peut avoir plusieurs structure de page (home, produit, admin, mentions legales...)
+	
+	- Un layout est prêt à recevoir des vues (des blocs html) en déclarant des block
+
+	-> récupérer le haut et le bas du site boutique en procédural. 
+	-> On nomme le fichier layout.html.twig
+	-> On l'enregistre Boutique3/app/ressources/views/
+	-> Dans le layout on créer un block content
+	-> Nos vues héritent du ou d'un layout. 
+
+
+3/ L'héritage Twig
+
+	-> Au même titre que l'héritage en PHP, TWIG permet de dire à un fichier qu'il dépend d'un parent. 
+	-> Pour TWIG, en réalité, l'héritage se matérialise par le fait de créer des blocks dans le parents (fenêtre ouvertes) dans lesquels les vues peuvent afficher du contenu HTML ou non. 
+	
+	/!\ Attention, si une vue hérite d'un template, il ne peut pas y avoir de contenu en dehors d'un block déclaré. 
+	
+
+4/ Modification de nos vues
+	-> index.html.twig : 
+		- On récupère le code HTML correspondant à boutique.php
+		- On définie l'héritage
+		- On met le contenu de boutique.php dans le block content
+		- On écrit les boucles en TWIG
+			<?php foreach($produits as $produit) : ?>
+			{% for produit in produits %}
+		
+		- On écrit les variables en TWIG
+			<?= $produit['titre'] ?>
+			<?= $produit -> getTitre() ?>
+			{{ produit.titre }}
+
+
+
+5/ Documentation Twig
+	lien : https://twig.symfony.com/doc/2.x/
+
+
+EXERCICE : 
+
+	- Afficher la page '/categorie/tshirt'
+		-> récupérer les array créés dans la route index
+		-> Passer toutes les infos à vue via render ($params)
+		-> tester : localhost:8000/categorie/fffff
+	
+	
+    - Afficher la page d'un produit '/produit/12'
+		-> Créer un array avec les infos d'un produit
+		-> passer les infos de ce produit à la vue
+		-> Créer la vue produit.html.twig	
+			-> héritage TWIG
+			-> HTML à récupérer dans la boutique procédural (fiche_produit.php) : 
+			
+				sharemycode.fr/sds
+			
+			-> Variables à changer (PHP > TWIG)
+		-> Tester : Localhost/produit/12
+	
+	
+----------------
+ETAPE 6 : Assets
+----------------
+sommaire :
+1/ Modification du composer.json
+2/ Mise à jour de l'app
+3/ Modification de nos vues
+----------------
+
+Le composant Asset de Symfony, nous permet de gérer les ressources (images, photos, css, js, liens etc...) et de les appeler de manière absolue.
+
+1/ Modification du composer.json
+
+	<code>
+	"require": {
+		"symfony/asset": "^3.4"
+    },
+
+2/ Mise à jour de l'app
+	<cmd>
+	composer update
+	--> Le composer prend connaissance du composer.json, et met à jours les composants déjà installés et/ou ajoute les composants pas encore installés
+	
+	
+	Autre méthode : 
+	<cmd>
+	composer require symfony/asset
+	--> le composer installe le composant demandé et met à jour le fichier composer.json
+	
+	
+3/ Modification de nos vues
+
+	- Layout : 
+		href="../../../web/css/styles.css"
+		href="{{ asset('css/styles.css') }}"
+		-> La fonction asset de twig permet d'avoir le chemin absolu vers le dossier web. 
+		
+		href="index.php"
+		href="{{ path('home') }}"
+		-> la fonction path() de twig permet d'afficher le chemin absolu d'une route. On utilise le nom de la route dans la fonction. 
+	
+	
+	- Vues : 
+		src="../../../web/photo/<?= $produit['photo'] ?>"
+		src="{{ asset('/photo/' ~ produit.photo ) }}"
+		-> la fonction asset permet de définir un chemin dynamique
+		
+		href="fiche_produit.php?id=<?= produit['id_produit'] ?>"
+		href="{{ path('produit', {'id' : produit.id_produit } ) }}"
+		-> la fonction path permet de définir des url dynamique ou :
+				- 'produit'  = le nom de la route
+				- 'id'       = le nom du param dynamique attendu dans la route
+				- produit.id_produit = la valeur du paramètre
+
+
+---------------------
+ETAPE 7 : Nos Entités
+---------------------
+Sommaire : 
+1/ Doctrine ORM et le concept d'entity
+2/ Créer entité Produit
+3/ Annotations
+4/ Mettre la BDD à jour via les Entity
+5/ Générer une entity en ligne de commande
+6/ Générer les entities depuis la BDD
+7/ Créer la BDD depuis les entités
+----------------------
+1/ Doctrine ORM et le concept d'entity
+	- D'une certaine manière les entités corresondent à la partie MODEL de notre MVC. C'est la relation avec la BDD. 
+	- Normalement, on ne devrait plus faire de SQL, ni ouvrir PHPMYADMIN
+	- On créé des entity (classes, plan de fabrication de nos objets, POPO) qui vont permettre à DOCTRINE de manipuler les tables dans la BDD. 
+	- Par exemple, nous ne ferons plus de requête INSERT, mais on utilisera une fonction de doctrine (persist()) qui sera en mesure à travers nos Entity de manipuler la BDD. 
+
+	---> Pour que tout cela soit possible, il faut définir les intéractions existante entre nos Entity et la BDD, via DOCTRINE ORM (Object Relation Mapping). On parle de mapping. 
+	
+	
+2/ Créer entité Produit
+	A/ Créer un dossier Entity/ dans notre BoutiqueBundle
+	B/ Créer un fichier Produit.php
+	C/ Créer les propriétés, les getter/setter, et le mapping
+
+
+
+3/ Annotations
+	
+	<code>
+	use Doctrine\ORM\Mapping as ORM; 
+	
+	/**
+	* @ORM\Table
+	* @ORM\Entity
+	*/
+	On précise que cette entité est mappé, et la table à laquelle elle correspond. 
+	
+	Pour chaque propriété on définie les infos :
+	
+	- Clé primaire :
+		/**
+		* @ORM\Column
+		* @ORM\Id
+		* @ORM\GeneratedValue
+		*/
+		
+		
+	- Autres propriétés : 
+		/**
+		* @ORM\Column
+		*/
+		
+	Liens :
+	Basic Mapping :https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html
+	
+	Association mapping : 
+	https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/association-mapping.html#association-mapping
+	
+
+4/ Mettre la BDD à jour via les Entity
+	<cmd>
+	php bin/console doctrine:schema:update --dump-sql
+	--> Montrer la requête à exécuter
+	
+	<cmd>
+	php bin/console doctrine:schema:update --force
+	--> Exécute la requête (modif de la BDD) 
+
+
+5/ Générer une entity en ligne de commande
+	<cmd>
+	php bin/console doctrine:generate:entity 
+
+	Puis on suit les différentes indications/étapes. 
+	
+		
+6/ Générer les entities depuis la BDD
+	A/ Supprimons le dossier Entity pour tout recréer (renommer Entity_). 
+	B/ <cmd>
+    php bin/console doctrine:mapping:import BoutiqueBundle\Entity annotation --path=src/BoutiqueBundle/Entity
+
+	--> cela créé les entité sans getter et setter
+	C/ <cmd>
+	php bin/console doctrine:generate:entities BoutiqueBundle
+	-> Cela met à jour les entités avec les getter et setter
+	
+	D/ Je vais lier mes entités à un repository
+	@ORM\Entity(repositoryClass="BoutiqueBundle\Repository\ProduitRepository")
+	@ORM\Entity(repositoryClass="BoutiqueBundle\Repository\MembreRepository")
+	@ORM\Entity(repositoryClass="BoutiqueBundle\Repository\CommandeRepository")
+	@ORM\Entity(repositoryClass="BoutiqueBundle\Repository\DetailsCommandeRepository")
+	<cmd>
+	php bin/console doctrine:generate:entities BoutiqueBundle
+	-> Cela va créer les repository correspondant à nos entités
+	
+
+7/ Créer la BDD depuis les entités
+
+	A/ Pour tester ce dernier point.. à savoir la création de la BDD depuis les Entités existantes... On va modifier les paramètres de connexion à la BDD. 
+	On se connecte à une BDD site_commerce2 (qui n'existe pas)
+	<code> fichier : app/config/parameters.yml
+	database_name: site_commerce2
+
+	B/<cmd>
+	php bin/console doctrine:database:create
+	
+	C/<cmd>
+	php bin/console doctrine:schema:update --dump-sql
+	--> Montrer la requête à exécuter
+	
+	D/<cmd>
+	php bin/console doctrine:schema:update --force
+	--> Exécute la requête (modif de la BDD)
+
+------------------
+ETAPE 8 : Doctrine
+------------------
+Sommaire : 
+1/ le service Doctrine
+2/ Accéder au service Doctrine depuis les controllers
+3/ Requete "SELECT * FROM ..."
+4/ Requete "SELECT * FROM ... WHERE id=x"
+5/ Requete "SELECT * FROM ... WHERE x = y"
+6/ REQUETE INSERT/UPDATE
+7/ REQUETE DELETE
+8/ Create Query et le Query Builder
+------------------
+
+1/ le service Doctrine - DQL
+	-> Doctrine est un outil puissant qui est utilisé dans Symfony, mais également dans ZEND, Laravel, cake...
+	
+	-> Doctrine se compose de deux éléments : 
+		- ORM (Object Relation Mapping): Mapping des entités
+		- DBAL (DataBase Abstract Layer): L'idée est de simplifier mes requêtes SQL en utilisant des fonctions PHP. On parle de DQL (Doctrine Query Language)
+
+2/ Accéder au service Doctrine depuis les controllers
+
+	Soit via l'EntityRepository : 
+	<code> dans un controller : 
+	$repository = $this -> getDoctrine() -> getRepository(Produit::class);
+	
+	Soit via l'EntityManager
+	<code> Dans un controller
+	$em = $this -> getDoctrine() -> getManager();
+	
+	<code> Dans un des repository
+	$em = $this -> getEntityManager();
+
+	Dans le controller on choisi le manager ou le repository en fonction de ce que l'on a vraiment besoin. 
+	
+3/ Requete "SELECT * FROM ..."
+
+	<code>
+	$produits = $repository -> findAll();
+
+4/ Requete "SELECT * FROM ... WHERE id=x"
+	<code>
+	$produit = $repository -> find($id);
+	$produit = $em -> find(Produit::class, $id);
+
+5/ Requete "SELECT * FROM ... WHERE x = y"
+	<code>
+	$produits = $repository -> findBy(['categorie' => $cat]);
+	$produits = $repository -> findBy(array('categorie' => $cat));
+
+	$etudiant = $repository -> findOneBy(['prenom' => 'sabuj']);
+	
+	$produits = $repository -> findBy(['categorie' => 'tshirt', 'couleur' => 'rouge' ], ['prix' => 'DESC'], 10, 0);
+
+
+6/ REQUETE INSERT/UPDATE
+
+	- Pour insérer un enregistrement. On instancie un objet de la classe (Entity) correspondante, on affecte des valeurs aux propriétés (via le formulaire normalement). 
+	$produit = new Produit; 
+	$produit -> setReference('xx') -> setCategorie() etc..
+	
+	- Puis on persist l'objet
+	$em -> persist($produit);
+
+	- Enfin on l'enregistre
+	$em -> flush(); 
+	
+	- POur update un enregistrement... D'abord on le récupère  sous forme d'objet (find), on le modifie (via un formulaire), puis on le persist() et on flush(). 
+	--> cf la route /admin/produit/update/{id}
+
+7/ REQUETE DELETE
+	- POur supprimer un enregistrement, on le récupère sous forme d'un objet (find). On prépare la suppression de cet objet (remove) et enfin on flush()
+	--> cf la route /admin/produit/delete/{id}
+	
+	
+8/ Create Query et le Query Builder
+
+	- Doctrine nous permet de manipuler simplement les enregistrements dans la BDD, à travers l'utilisation des objets (Entity) et de fonctions simples (findAll, find, findBy, findOneBy, persist, remove, flush)
+	
+	- Cela-dit on pourrais être ammenés à vouloir des requêtes plus complexes et plus spécifiques. Doctrine nous fournit deux outils pour le faire : 
+	
+	createQuery : 
+	Nous permet d'écrire du SQL (DQL). 
+		--> cf route  'home' / ou ProduitRepository
+	
+	queryBuilder : 
+	Nous permet d'écrire du SQL en PHP 0_o
+		--> cf route  'home' / ou ProduitRepository
+
+
+	liens : 
+	
+	Doc Doctrine : 
+	https://www.doctrine-project.org/
+	
+	CreateQuery : 
+	https://hotexamples.com/examples/doctrine.orm/EntityManager/createQuery/php-entitymanager-createquery-method-examples.html
+	
+	QueryBuilder : 
+	https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/query-builder.html
+	https://www.doctrine-project.org/projects/doctrine-mongodb-odm/en/latest/reference/query-builder-api.html#creating-a-query-builder
+	
+	Find 
+
+----------------------
+EXERCICES : 	
+----------------------
+
+- Créer un controller AdminController	
+- Créer les routes (sous forme de liste dans un 1er temps)
+	-> show_produits 
+	(affiche tous les produits dans un tableau)
+	-> delete_produit 
+	(supprime un produit via son ID et retourne à show_produit)
+	
+	-> show_commandes 
+	(affiche toutes les commandes dans un tableau)
+	-> delete_commande
+	(supprime une commande via son ID et retourne à show_commandes)
+	
+	-> show_membres 
+	(affiche tous les membres dans un tableau)
+	-> delete_membre
+	(supprime un membre via son ID et retourne à show_membres)
+
+- Gérer les affichages des pages correspondantes :
+	-> fonction render
+	-> layout_admin.html.twig ou  layout.html.twig
+	-> dossier admin dans les views
+	-> les vues corespondantes
+		- show_produits.html.twig
+		- show_commandes.html.twig
+		- show_membres.html.twig
+	
+- Récupérer les infos en BDD dans les routes
+- Effectuer les traitements dans les routes
+
+	
+	

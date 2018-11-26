@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 class DefaultController extends Controller
@@ -22,7 +23,7 @@ class DefaultController extends Controller
 
     /**
      * 
-     * @Route("/bonjour")
+     * @Route("/bonjour", name="bonjour")
      * Une route, finalement c'est une URL qui correspond à une méthode
      * 
      * 
@@ -60,6 +61,7 @@ class DefaultController extends Controller
     }
     /**
      * @Route("/hi/{prenom}")
+     * http://localhost:8000/hi/Arnaud?age=25
      */
     public function hiAction($prenom, Request $request){
         
@@ -71,5 +73,35 @@ class DefaultController extends Controller
             'age'       => $age
         );
         return $this->render("@POLESTEST/Test/hi.html.twig", $params);
+    }
+    /**
+     * @Route("/redirect")
+     */
+    public function redirectAction(){
+        $url = $this->get('router')->generate('bonjour');
+        // l'argument 'boujour' étant le nom de la route
+
+        return new RedirectResponse($url);
+    
+    }
+    /**
+     * @Route("/redirect2")
+     */
+     public function redirect2Action(){
+        return $this->redirectToRoute('bonjour');
+        // l'argument 'boujour' étant le nom de la route   
+    }
+    /**
+     * @Route("message")
+     */
+    public function messageAction(Request $request){
+        $session = $request->getSession();
+        // On récupère le contenu de $_SESSION sous la form d'un objet session.
+
+        $session->getFlashBag()->add('test', 'Voici le message 1');
+        $session->getFlashBag()->add('test', 'Voici le message 2');
+
+        return $this->render("@POLESTEST/Test/message.html.twig");
+
     }
 }

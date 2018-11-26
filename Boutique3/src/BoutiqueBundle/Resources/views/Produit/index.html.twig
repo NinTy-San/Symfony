@@ -1,0 +1,48 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{# c'est super le concept d'héritage #}
+
+{% block content %}
+	<!-- c'est super le concept d'héritage -->
+	<h1 class="mt-4">{{ title }}</h1>
+    <div class="row">
+
+		{% for message in app.session.flashBag.get('success') %}
+			<span class="alert alert-info">{{ message }} </span>
+		{% endfor %}
+		
+        <div class="col-md-3">
+            <a href="" class="list-group-item">Tous</a>
+			
+			{% for cat in categories %}
+				<a href="{{ path('categorie', { 'cat':  cat.categorie } ) }}" class="list-group-item">{{ cat.categorie | capitalize }}</a>
+			{% endfor %}
+			
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+              
+			{% for produit in produits %}
+			  <div class="col-sm-4 mb-4">
+					<div class="card">
+						<a href="{{ path('produit', { 'id':  produit.idProduit } ) }}">
+							<img src="{{ asset('/photo/' ~ produit.photo) }}" alt="{{ produit.titre }}" class="card-img-top">
+						</a>
+						<div class="card-body"> 
+							<h4>{{ produit.titre }}</h4>    
+							<h5>{{ produit.prix }}€</h5>
+							<p>{{ produit.description }}</p>  
+						</div>
+					</div>
+				</div>   
+			{% endfor %}
+				
+				
+				
+				
+            </div>
+        </div>
+    </div><!-- .row -->
+{% endblock %}	
