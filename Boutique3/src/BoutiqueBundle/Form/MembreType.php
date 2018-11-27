@@ -32,9 +32,9 @@ class MembreType extends AbstractType
                             'message' => 'veuillez renseigner votre pseudo'
                         )),
                         new Assert\Length(array(
-                            'min'           => 3,
+                            'min'           => '3',
                             'minMessage'    => 'Votre pseudo doit contenir 3 caractères minimum',
-                            'max'           => 20,
+                            'max'           => '20',
                             'maxMessage'    => 'Votre pseudo doit contenir 20 caractères maximium'
                         )),
                         new Assert\Regex(array(

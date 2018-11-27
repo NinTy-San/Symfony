@@ -1,0 +1,36 @@
+{% extends 'layout.html.twig' %}
+    {% block content %}
+        <h1> {{ title }} de {{ membre.pseudo }} (client N° {{ membre.idMembre}}) </h1>
+
+        <ul>
+            <li> Pseudo : {{membre.pseudo}} </li>
+            <li> Nom : {{membre.nom}} </li>
+            <li> Prénom : {{membre.prenom}} </li>
+            <li> Ville : {{membre.ville}} </li>
+            <li> Adresse : {{membre.adresse}} </li>
+        </ul>
+
+        <h2>Historique des achats :</h2>
+        <p>Nombre de commande : {{ commandes | length }} </p>
+        
+
+        <table border="1">
+        <tr>
+            <th>Id de la commande</th>
+            <th>Montant</th>
+            <th>Date</th>
+            <th>Etat</th>
+        </tr>
+
+        {% for cmd in commandes %}
+            <tr>
+                <td> {{ cmd.idCommande }} </td>
+                <td> {{ cmd.montant | number_format(2, ',', ' ') }} </td>
+                <td> {{ cmd.dateEnregistrement | date("m/d/Y") }} </td>
+                <td> {{ cmd.etat }} </td>      
+            </tr>
+        {% endfor %}
+        </table>
+
+
+    {% endblock %}

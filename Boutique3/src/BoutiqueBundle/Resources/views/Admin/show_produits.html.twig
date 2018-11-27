@@ -20,6 +20,13 @@
 
     <div class="row mt-5">
         
+     
+
+<div class="col-3">
+
+  <a href="{{ path('add_produit') }}" class="btn btn-info m3">ajouter un produit</a>
+   </div>
+
         <div class="col-12">
 			<p class="alert alert-info">Nombre de produits dans la boutique :  {{ produits | length }} </p><br>
         <div>
@@ -76,7 +83,7 @@
                         <td> {{pdt.stock}} </td>
 
                         <td><a target="_blank" href="{{ path('produit', {'id' : pdt.idProduit})}}"><i class="text-info fas fa-eye"></i></a></td>
-                       <td><a href=""><i class="text-warning fas fa-edit"></i></a></td>
+                       <td><a href="{{ path('update_produit', {'id' : pdt.idProduit})}}"><i class="text-warning fas fa-edit"></i></a></td>
                         <td><a href="{{ path('delete_produit', {'id' : pdt.idProduit})}}"><i class="text-danger fas fa-trash-alt"></i></a></td>
                 </tr>
                 {% endfor %}

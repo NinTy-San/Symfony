@@ -4,6 +4,7 @@ namespace BoutiqueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * Produit
  *
@@ -76,6 +77,8 @@ class Produit
      * @ORM\Column(name="photo", type="string", length=255, nullable=true)
      */
     private $photo;
+
+    private $file; // On ne mappe pas $file, car n'a pas vocation à etre enregistrer en BDD.Elle représente la photo (en tant que data)
 
     /**
      * @var float
@@ -342,4 +345,61 @@ class Produit
     {
         return $this->stock;
     }
+
+    /**
+     * Set the value of file
+     *
+     * @return  Produit
+     */ 
+    public function setFile(UploadedFile $file = NULL)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of file
+     */ 
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function uploadPhoto(){
+        // Fonction dont l'objectif est d'aller enregistrer notre photo dans le dossier photo.
+
+        //1 : Changer le nom de la photo
+        $nom_photo = $this->file->getClientOriginalName();
+        $new_nom_photo = $this->renameFile($nom_photo);
+
+        //2 : Définir le chemin de destination
+        $chemin = $this->photoDir();
+
+        //3 : Stocker le nom de la photo dans la photo pour que l'info soit enregistrer en BDD 
+        $this-> setPhoto($new_nom_photo);
+
+        //4 : Déplacer la photo 
+        $this->file->move($chemin, $new_nom_photo);
+
+    }
+
+    public function renameFile($nom){
+        return 'photo_'. time() .'_'. rand(1,9999) . '_' . $nom;
+        // Transforme le nom de la photo de la manière : 
+            // ex : tshirt.jpg
+            // Devient : photo_1515151164_154_tishirt.jpg 
+    }
+
+    public function photoDir(){
+        return __DIR__ . '/../../../web/photo';
+    }
+    public function removePhoto(){
+        $file = $this->photoDir(). '/' .$this->getPhoto();
+
+        if(file_exists($file)){
+            unlink($file);
+        }
+    }
+    
 }
