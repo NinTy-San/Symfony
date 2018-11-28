@@ -32,6 +32,7 @@
                 <tr class=" text-white">
                     <th>Id commande</th>
                     <th>Id membre</th>
+                    <th>Ville</th>
                     <th>Montant</th>
                     <th>Date d'enregistrement</th>
                     <th>Etat</th>
@@ -50,11 +51,12 @@
                                 <td> {{produit.valeur}} </td>
                             {% endfor %}
                         {% endfor %} #}
-                    
+
                         <td> {{commande.idCommande}} </td>
                         <td> {{commande.idMembre}} </td>
+                        <td> {{commande.membre.ville}} </td>
                         <td> {{commande.montant}} </td>
-                        <td> {{commande.date_enregistrement}} </td>
+                        <td> {{commande.dateEnregistrement | date("m/d/Y") }} </td>
                         <td> {{commande.etat}} </td>
                         <td><a href="{{ path('delete_produit', {'id' : commande.idCommande})}}"><i class="text-danger fas fa-trash-alt"></i></a></td>
                 </tr>

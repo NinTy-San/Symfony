@@ -3,6 +3,8 @@
 namespace BoutiqueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use BoutiqueBundle\Entity\Membre;
 
 /**
  * Commande
@@ -12,6 +14,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Commande
 {
+    /**
+     * Une commande à un seul membre. Nous somme coté propriétaire
+     * 
+     * @ORM\ManyToOne(targetEntity="Membre", inversedBy="commande")
+     * @ORM\JoinColumn(name="id_membre", referencedColumnName="id_membre")
+     */
+    private $membre;
+
+
     /**
      * @var integer
      *
@@ -48,6 +59,29 @@ class Commande
      * @ORM\Column(name="etat", type="string", length=100, nullable=false)
      */
     private $etat;
+
+
+    /**
+     * Set une commande à un seul membre. Nous somme coté propriétaire
+     *
+     * @param object Membre
+     * @return  Commande
+     */ 
+    public function setMembre(Membre $membre)
+    {
+        $this->membre = $membre;
+
+        return $this;
+    }
+    /**
+     * Get une commande à un seul membre. Nous somme coté propriétaire
+     * 
+     * @param object Membre
+     */ 
+    public function getMembre()
+    {
+        return $this->membre;
+    }
 
 
 
@@ -156,4 +190,5 @@ class Commande
     {
         return $this->etat;
     }
+
 }

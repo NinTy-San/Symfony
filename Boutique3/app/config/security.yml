@@ -2,10 +2,27 @@
 # https://symfony.com/doc/current/security.html
 security:
 
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+        # BoutiqueBundle\Entity\Membre: plaintext
+
+
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         in_memory:
-            memory: ~
+            memory: 
+                users:
+                    arnaud:
+                        password: 123456
+                        roles: 'ROLE_USER'
+                    admin: 
+                        password: admin
+                        roles: 'ROLE_ADMIN'
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_USER]
+
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -14,7 +31,18 @@ security:
             security: false
 
         main:
-            anonymous: ~
+            pattern: ^/
+            anonymous: true
+
+            form_login:
+                login_path: connexion
+                check_path: login_check
+                default_target_path: home
+
+            logout:
+                path: deconnexion
+                target: home
+
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
@@ -22,3 +50,9 @@ security:
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             #form_login: ~
+
+    access_control:
+    - {path: ^/admin, roles: ROLE_ADMIN}
+    # - {path: ^/connexion, roles: IS_ROLE_AUTHENTICATED_ANONYMOUS}
+    # - {path: ^/inscritopn, roles: IS_ROLE_AUTHENTICATED_ANONYMOUS}
+    # - {path: ^/profil, roles: ROLE_USER}

@@ -1,10 +1,37 @@
 {% extends 'layout.html.twig' %}
 
+{% block title %} {{ title }} {% endblock %}
+
 {% block content %}
-    <h1>Connexion</h1>
+    <h1> {{ title }} </h1>
+  
     {% for message in app.session.flashbag.get('success') %}
         <span class="alert alert-success">{{ message }} </span><br>
     {% endfor %}
+
+    {% for message in app.session.flashbag.get('error') %}
+        <span class="alert alert-danger">{{ message }} </span><br>
+    {% endfor %}
+    
+    <form method="post" action="{{ path('login_check') }}">
+    
+        <div class="form-group">
+            <label>Pseudo</label>
+            <input type="text" name="_username" class="form-control" value="{{ lastUserName }}" />
+        </div>
+    
+
+        <div class="form-group">
+            <label>Mot de pass</label>
+            <input type="password" name="_password" class="form-control" value="" />
+        </div>
+    
+        <div>
+            <input type="submit" class="btn btn-info" value="Connexion" />
+        </div>
+    
+
+    </form>
 
 
 {% endblock %}

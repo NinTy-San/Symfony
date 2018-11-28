@@ -213,7 +213,6 @@ class AdminController extends Controller
         $params = array(
             'title' => 'Modifier le produit n°' . $produit->getIdProduit(), 
             'produitForm' => $form->createView()
-
         );
 
         return $this->render("@Boutique/Admin/form_produit.html.twig", $params);
@@ -226,18 +225,46 @@ class AdminController extends Controller
         $repo_membre = $this->getDoctrine()->getRepository(Membre::class); 
         $membre = $repo_membre->find($id);
         
-        $repo_commande = $this->getDoctrine()->getRepository(Commande::class); 
-        $commandes = $repo_commande->findBy(['idMembre' => $id]);
+        // $repo_commande = $this->getDoctrine()->getRepository(Commande::class); 
+        // $commandes = $repo_commande->findBy(['idMembre' => $id]);
 
         $params = array(
             'title'     => 'Fiche client',
             'membre'    => $membre,
-            'commandes' => $commandes
+            // 'commandes' => $commandes
         );
+
+        // avec l'association mapping de Doctrine, ici il n'est plus nécessaire de récupérer les infos de commandes, elle sont deja liées au membre
 
         return $this->render("@Boutique/Admin/profil_client.html.twig", $params);
 
     }
+    /**
+     * @Route("/admin/commande/add", name="add_commande")
+     */
+    public function addCommandeAction(request $request){
+        $commande = new Commande;
+        $form = $this->createForm(CommandeType::class, $commande);
+        $form->handleRequest($request);
 
+        if($form->isSubmitted() && $form->iValid()){
+           
+            $em = $this->getDoctrine()->getManager();
+                $em -> persist($commande);
+                $em -> flush();
+
+                $request->getSession()->getFlashBag()->add('success', 'La commande '.$commande->getIdCommande() . ' a été ajoutée avec succès');
+
+                return $this->redirectToRoute('show_commandes');
+        }
+            $params = array(
+            'commandeForm' => $form->createView(),
+            'title' => 'Ajouter une commande'
+        );
+
+        return $this->render("@Boutique/Admin/form_commande.html.twig", $params);
+
+
+    }
 
 } // Fin class AdminController 

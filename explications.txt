@@ -14,10 +14,11 @@ ETAPE 7 : Nos Entités
 ETAPE 8 : Doctrine
 ETAPE 9 : Les formulaires
 ETAPE 10 : Validations des données
-ETAPE 11 : Sécurité et Utilisateurs
-ETAPE 12 : Les services
-ETAPE 13 : Les évènements
-ETAPE 14 : Symfony 4 (BundleLess et Flex)
+ETAPE 11 : Association Mapping
+ETAPE 12 : Sécurité et Utilisateurs
+ETAPE 13 : Les services
+ETAPE 14 : Les évènements
+ETAPE 15 : Symfony 4 (BundleLess et Flex)
 
 -------------------------------
 INTRO : Qu'est-ce que Symfony ? 
@@ -745,5 +746,278 @@ EXERCICES :
 - Récupérer les infos en BDD dans les routes
 - Effectuer les traitements dans les routes
 
+-------------------------
+ETAPE 9 : Les formulaires
+-------------------------
+Sommaire : 
+1/ Le fonctionnement des formulaires
+2/ Création d'une formulaire simple pour l'inscription
+3/ Les classes types
+4/ Récupérer les données du formulaire
+5/ Personnaliser le formulaire avec bootstrap
+6/ Créer nos propres class type hérité de AbstractType
+7/ Update un enregistrement très simplement
+8/ Champs File (pour la photo d'un produit par exemple)
+-------------------------
+1/ Le fonctionnement des formulaires
+
+ - Avec symfony, nos formulaires sont liés à une entity. 
+	-> inscription 		-> Entity\Membre
+	-> ajout de produit -> Entity\Produit
+	-> Modif de produit -> Entity\Produit
 	
+	Par exemple lorsque l'on modifie un produit en base de données via un formulaire... En réalité le formulaire modifie un objet Produit, on dit qu'on hydrate le formulaire. 
+	
+	
+- Chaque type de champs (text, checkbox, select, submit...) correspond à une classe (TextType, CheckboxType, ChoiceType, SubmitType...)	
+
+
+2/ Création d'un formulaire simple pour l'inscription
+
+	-> Créer une route "/inscription" dans le MembreController. 
+	
+	FormBuilder est un 'constructeur' de formulaire. Il nous permet de paramétrer un formulaire. 
+	
+	- Méthode longue :
+	$formBuilder = $this -> get('form.factory') -> createBuilder(FormType::class, $membre);
+	
+	- Méthode courte : 
+	$formBuilder = $this -> createFormBuilder($membre);
+
+	En créant un formulaire on le lie à un objet issu d'une entité ($membre). 
+	
+	On pamètre le formulaire (créer chaque champs) grace à la méthode add() de notre formBuilder. 
+	$formBuilder -> add('prenom', TextType::class) etc...
+	
+	/!\ Attention à bien use toutes les class Type dont nous avons besoin. 
+	
+	On n'oublie pas de générer le formulaire : 
+	$form = $formBuilder -> getForm(); 
+	
+	Enfin on récupère la view 
+	'membreForm' = $form -> createView();
+
+	Dans le Twig le formulaire est affiché de plusieurs manières possibles (voir inscription.html.twig
+	{{ form(membreForm) }}
+	
+3/ Les classes types
+
+liens : https://symfony.com/doc/current/reference/forms/types.html
+
+
+4/ Récupérer les données du formulaire
+
+	A/ On récupère la requête post du formulaire, et on lie les champs à notre objet (hydrate l'objet).
+	<code>
+	$form -> handleRequest($request);
+	
+	B/ On check que le formulaire soit bien activé (non vide) et les données valides
+	<code>
+	if($form -> isSubmitted() && $form -> isValid())
+
+	/!\ Nous verons plus bas, les options de validité
+	
+	C/ On enregistre les données saisies
+	<code>
+	$em = $this -> getDoctrine() -> getManager();
+	$em -> persist($membre);
+	$em -> flush();
+
+5/ Personnaliser le formulaire avec bootstrap
+
+	- Méthode 1 : 
+	fichier app/config/config.yml
+	<code>
+	twig
+		form_themes:
+			- 'bootstrap_4_layout.html.twig'
+			
+	- Méthode 2 : 
+	On prend la main sur la création du formulaire avec notre propre structure et mise en forme
+	voir le fichier inscription.html.twig
+	<code>
+	form_start() etc...
+
+
+6/ Créer nos propres class type hérité de AbstractType
+
+	- Contexte : Actuellement pour ajouter un formulaire à une route, on récupère le formBuilder, et on configure tous les champs...
+		-> Problème : Les routes inscription, update_profil, admin_add_membre et admin_update_membre auront toutes besoin d'un même formulaire...
+		
+		-> Solution : On va créer une classe MembreType, dont le boulot sera de pamarétrer (créer) un formulaire Membre. 
+
+		-> Résultat : Il suffira de appel appel à cette classe pour générer un formulaire Membre.
+		
+		==> GAIN DE TEMPS et meilleur FACTORISATION du code
+
+	Comme souvent Symfony nous permet d'optimiser certaines choses, via les lignes de commande. 
+	
+	<cmd>
+	php bin/console generate:doctrine:form BoutiqueBundle:Membre
+	php bin/console generate:doctrine:form BoutiqueBundle:Produit
+	php bin/console generate:doctrine:form BoutiqueBundle:Commande
+		
+		
+
+
+7/ Update un enregistrement très simplement
+ - Voir la route update_produit.
+	-> Le fonctionenment de symfony, permet de lier un objet au formulaire et inversement. On dit Hydrater. Et de fait lorsquo'n valide un formulaire (persist() puis flush()) cela enregistre les infos en BDD. 
+
+
+8/ Champs File (pour la photo d'un produit par exemple)
+	-> Dans le formulaire (ProduitType) on créé un champs file (FileType). On le nomme file et surtout pas photo. Car ce n'est pas la propriété photo de notre objet produit. La propriété photo elle, elle stocke le nom de la photo pour l'enregistrer en BDD. 
+	
+	-> On modifie notre entité Produit 
+		- Ajout d'une propriété file (liée au champs file du formulaire) qui manipulera la data. 
+		- Cette propriété est en fait un objet UploadedFile. Près à être charger sur le serveur. 
+		
+	-> On créer les fonctions suivantes : 
+		- uploadPhoto()
+		- photoDir()
+		- renameFile()
+		- removePhoto()
+			=> Ces fonctions on chacune leur rôle, et nanipulent le nom, le chemin, l'enregistrement et la suppression de la photo. 
+			
+	-> On ajoute à nos fonction du controller (update_produit et add_produit) la fonction uploadPhoto() et removePhoto() avant de flush() les infos du formulaire. 
+	
+	/!\ En utilisant Symfony de manière plus avancée, on pourrait utiliser les évènements pour rendre certaines choses plus automatiques comme par exemple supprimer tout seul une photo lorsqu'une nouvelle est chargée. 
+	
+------------------------------	
+ETAPE 11 : Association Mapping
+------------------------------	
+Sommaire : 
+1/ Qu'est-ce que l'association mapping
+2/ Les types de mapping
+3/ Mise en place du mapping (Membre -> Produit)
+4/ Utiliser le mapping dans les formulaires	
+------------------------------	
+1/ Qu'est-ce que l'association mapping
+
+	- Nos bases de données relationnelles (Modèle Merise), expriment des relations existantes entre les différentes tables. 
+		ex : - Une commande est liée à un membre (et un seul)
+		     - Un membre peut être lié à zéro ou plusieurs commande. 
+			 
+	- Pour manipuler les datas, d'une table à une autre, on peut utiliser les JOINTURE. Mais cela s'avère parfois délicat (ex : Si je récupère tous les membres, et pour chacun toutes ses commandes, et pour chaque commande, tous les détails et pour chaque détails la photo du produit :/ ), il faut ruser, et recomposer/utiliser des tableaux de données compliqués. 
+		--> L'ensemble de la démarche est très compliqué
+		
+	- l'ORM de Doctrine nous permet de lier les entités entre-elle, et donc de rendre la relation concrete, même dans le code. Ainsi lorque je manipule un objet Membre, j'ai accès à tous les objet Commande dont il est lié. Et inversement quand je manipule un objet Commande j'ai accès à l'objet Membre dont il dépend. 
+	
+
+2/ Les types de mapping
+	- Lien : https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/association-mapping.html#association-mapping
+
+
+3/ Mise en place du mapping (Membre -> Produit)
+	- Le mappig se paramètre via les annotations. 
+	- Le paramètrage doit être effectué des deux coté (Entity Membre, et sur l'Entity Commande)
+	- La classe ArrayCollection, permet de définir qu'une propriété d'une Entity est en fait un groupe d'objet. 
+	(ex : Un membre peut avoir plusieurs Commandes, sous la forme d'un ArrayCollection)
+	
+	==> A partir de là quand je récupère un membre, alors je récupere toutes ses commandes (twig : membre.commandes)
+
+	
+4/ Utiliser le mapping dans les formulaires	
+
+	- Maintenant que les entité Membre et Commande sont liées. Lorsqu'on ajoute une commande, il faudrait choisir le membre qui a passé la commande, sous forme d'un objet, et non d'un simple champs id_membre. 
+	
+	- Voir CommandeType.php
+	
+	
+	
+	===> Dans notre application, il faudrait lier : 
+		- Commande et Details_commande : oneToMany Unidirectionnel
+		- Produit et Details_commande : ManyToOne : Unidirectionnel
+	
+		Suggestion : 
+		- Commande et produit : ManyToMany Bidirectionnel
+
+-----------------------------------
+ETAPE 12 : Sécurité et Utilisateurs
+-----------------------------------
+Sommaire : 
+1/ Niveaux de sécurité
+2/ Fichier de sécurité
+3/ Class Membre
+4/ Inscription
+5/ L'accessibilité
+Bonus/ FosUserBundle
+-----------------------------------
+1/ Niveaux de sécurité
+
+	- Sur Symfony il existe 3 niveau de sécurité : 
+	 -> Anonyme (Visiteur lambda)
+	 -> User Identitifié (ROLE_USER)
+	 -> User avec des droits (ROLE_ADMIN)
+	 
+	 
+    - Le système de sécurité se comporte comme un parefeu sur chaque page. Symfony va tester le statut de l'utilisateur et fournir la ressource (la page)
+	  -> si user anonyme, ressource est dispo : OK
+	  -> si user anonyme, ressource est NA : ---> connexion
+	  -> Si user connecté, ressource est dispo : OK
+	  -> Si user connecté, ressous est NA : ---> Erreur
+
+
+2/ Fichier de sécurité
+
+	fichier : app/config/security.yml
+	
+	-> Encoders (plaintext signifie pas d'encodage)
+	-> Providers (Qui sont nos users + users éphémères pour les tests)
+	-> Firewalls (Les regles connexion/deconnexion
+	-> Access Control (accessibilité)
+	-> role hierarchy (dégré d'action possible)
+	
+	
+	
+4/ Classe Membre		
+	-> Implementation de UserInterface
+	-> Modifier pseudo --> username (+ getter et setter)
+	-> modifier mdp ---> password (+ getter et setter)
+	-> ajouter salt (+ getter et setter) 
+	-> ajouter role (+ getter et setter)
+	-> Ajouter getRoles() et EraseCredential() (obligatoire et liées à l'implémentation de UserInterface
+
+5/ Classe MembreType
+	-> Modifier pseudo --> username
+	-> modifier mdp ---> password
+
+6/ inscription.html.twig
+	-> Modifier pseudo --> username
+	-> modifier mdp ---> password
+	-> Crypter le MDP avec le salt.
+	
+7/ Route Connexion
+	-> Déjà fonctionnelle sauf que la connexion est basée sur la mémoire (security.yml) et non sur la table Membre. 
+	
+		
+-------------------
+BUNDLE FOSUSER
+(Pour gérer la connexion, l'inscription, la déconnexion)
+-------------------
+
+Installation : 
+<cmd>
+composer require friendsofsymfony/user-bundle "~2.0"
+
+Configuration générale : 
+Lien : https://openclassrooms.com/fr/courses/3619856-developpez-votre-site-web-avec-le-framework-symfony/3624755-securite-et-gestion-des-utilisateurs
+
+--> voir chapitre "utiliser FosUser"
+
+Configuration de Fos_email :
+Lien : https://openclassrooms.com/forum/sujet/symfony-bundle-fosuser-erreur
+
+
+-> Notre Form MembreType (RegisterType par exemple) ne contient que les champs hors ce qui est déjà géré par FOSUSER et déclare sont parent  'FOS\UserBundle\Form\Type\RegistrationFormType'
+
+
+
+
+
+
+
+
+
+
 	

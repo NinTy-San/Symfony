@@ -11,7 +11,7 @@
         </ul>
 
         <h2>Historique des achats :</h2>
-        <p>Nombre de commande : {{ commandes | length }} </p>
+        <p>Nombre de commande : {{ membre.commande | length }} </p>
         
 
         <table border="1">
@@ -22,7 +22,7 @@
             <th>Etat</th>
         </tr>
 
-        {% for cmd in commandes %}
+        {% for cmd in membre.commande %}
             <tr>
                 <td> {{ cmd.idCommande }} </td>
                 <td> {{ cmd.montant | number_format(2, ',', ' ') }} </td>

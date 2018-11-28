@@ -16,6 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
 use BoutiqueBundle\Form\MembreType;
 
 
@@ -93,11 +95,42 @@ class MembreController extends Controller
      * @Route("/connexion/", name="connexion")
      * 
      */
-    public function connexionAction(){
+    public function connexionAction(Request $request){
 
-        $params = array();
+        $auth = $this->get('security.authentication_utils');
+
+        $lastuserName = $auth->getLastUserName();
+        $session = $request->getSession();
+
+        $error = $auth->getLastAuthenticationError();
+
+        // On récupère 3 infos :
+        // - le login de l'utilisateur si mauvais MDP
+        // - La session pour les flashbags
+        // - Les erreurs de connexion
+
+        if(!empty($error)){
+            $session->getFlashBag()->add('error', 'Problème d\'identification ! ');
+        }
+
+        $params = array(
+            'lastUserName'  => $lastuserName,
+            'title'         => 'Connexion'
+        );
         return $this->render('@Boutique/Membre/connexion.html.twig', $params);
     }
+
+    /**
+     * @Route("/deconnexion/", name="deconnexion")
+     */
+    public function deconnexionAction(){}
+
+
+    /**
+     * @Route("/login_check/", name="login_check")
+     */
+    public function loginCheckAction(){}
+
 
     /**
      * @Route("/profil/update/", name="profil_update")
